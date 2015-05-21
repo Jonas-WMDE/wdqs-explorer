@@ -8,10 +8,10 @@
     container.style.height = '36em';
     bodyContent.insertBefore(container, bodyContent.firstChild);
 
-    var nodesMap = {};
-    var edges = [];
+    var nodes = new mw.vis.DataSet();
+    var edges = new mw.vis.DataSet();
 
-    var network = new mw.vis.Network(container, { nodes: [], edges: []}, {});
+    var network = new mw.vis.Network(container, { nodes: nodes, edges: edges}, {});
     network.on('doubleClick', function (properties) {
       if (properties.nodes.length === 1) {
         var fromId = properties.nodes[0];
@@ -40,28 +40,17 @@
       }
     });
 
-    var redraw = function() {
-      var nodes = [];
-      for (var id in nodesMap) {
-        if (nodesMap.hasOwnProperty(id)) {
-          nodes.push({ id: id, label: nodesMap[id] });
-        }
-      }
-      network.setData({ nodes: nodes, edges: edges });
-    };
-
     var addLink = function(fromId, linkLabel, toId, toLabel) {
-      nodesMap[toId] = toLabel;
-      edges.push({ from: fromId, to: toId, label: linkLabel });
-      redraw();
+      nodes.add([ { id: toId, label: toLabel } ]);
+      edges.add([ { from: fromId, to: toId, label: linkLabel } ]);
     };
 
     mw.wdqsGetLabelById(rootId).apply(
       function (label) {
-        nodesMap[rootId] = label;
-        redraw();
+        nodes.add([ { id: rootId, label: label } ]);
       }
     );
+
   };
 
   var bodyContent = document.getElementById('bodyContent');
