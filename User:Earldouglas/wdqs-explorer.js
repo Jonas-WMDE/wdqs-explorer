@@ -41,7 +41,9 @@
     });
 
     var addLink = function(fromId, linkLabel, toId, toLabel) {
-      nodes.add([ { id: toId, label: toLabel } ]);
+      if (!nodes.get(toId)) {
+        nodes.add([ { id: toId, label: toLabel } ]);
+      }
       edges.add([ { from: fromId, to: toId, label: linkLabel } ]);
     };
 
