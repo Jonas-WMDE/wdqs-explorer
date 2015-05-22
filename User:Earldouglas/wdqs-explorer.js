@@ -35,6 +35,13 @@
       { edges: { style: 'arrow' } }
     );
 
+    network.on('doubleClick', function (properties) {
+      if (properties.nodes.length === 1) {
+        var label = nodes.get(properties.nodes[0]).label;
+        window.open('//en.wikipedia.org/wiki/' + label, '_blank');
+      }
+    });
+
     network.on('click', function (properties) {
       while (panelContainer.hasChildNodes()) {
         panelContainer.removeChild(panelContainer.childNodes[0]);
