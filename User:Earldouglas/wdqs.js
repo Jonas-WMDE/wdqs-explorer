@@ -28,6 +28,24 @@
             return g(x).apply(k);
           });
         });
+      },
+      sequence: function (f2) {
+        var x1 = null;
+        var x2 = null;
+        return future(function (k) {
+          f(function (x) {
+            x1 = x;
+            if (x2 !== null) {
+              k(x1, x2);
+            }
+          });
+          f2.apply(function (x) {
+            x2 = x;
+            if (x1 !== null) {
+              k(x1, x2);
+            }
+          });
+        });
       }
     };
   };
@@ -45,14 +63,14 @@
 
   mw.wdqsGetIncomingLinks = function (uri) {
     return mw.wdqsQuery(
-      'SELECT ?s ?sl ?p ?pl WHERE {' +
-      '  ?s ?p ' + uri + ' .' +
-      '  ?s <http://www.w3.org/2000/01/rdf-schema#label> ?sl .' +
-      '  FILTER ( LANG(?sl) = "en" )' +
-      '  ?s <http://wikiba.se/ontology#directClaim> ?p .' +
-      '  ?s rdfs:label ?pl .' +
+      'SELECT ?o ?ol ?p ?pl WHERE {' +
+      '  ?o ?p ' + uri + ' .' +
+      '  ?o <http://www.w3.org/2000/01/rdf-schema#label> ?ol .' +
+      '  FILTER ( LANG(?ol) = "en" )' +
+      '  ?ps <http://wikiba.se/ontology#directClaim> ?p .' +
+      '  ?ps rdfs:label ?pl .' +
       '  FILTER ( LANG(?pl) = "en" )' +
-      '} LIMIT 20'
+      '} LIMIT 50'
     );
   };
 
@@ -69,7 +87,7 @@
       '  ?s <http://wikiba.se/ontology#directClaim> ?p .' +
       '  ?s rdfs:label ?pl .' +
       '  FILTER ( LANG(?pl) = "en" )' +
-      '} LIMIT 20'
+      '} LIMIT 50'
     );
   };
 
