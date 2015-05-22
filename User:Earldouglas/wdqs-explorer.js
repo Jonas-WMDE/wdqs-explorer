@@ -128,8 +128,8 @@
     var getBindings = function (fromId) {
       mw.wdqsGetOutgoingLinksById(fromId).sequence(
         mw.wdqsGetIncomingLinksById(fromId)).apply(
-        function (outgoing, incoming) {
-          showPanel(fromId, { outgoing: outgoing, incoming: incoming });
+        function (bindingses) {
+          showPanel(fromId, { outgoing: bindingses[0], incoming: bindingses[1] });
         }
       );
     };

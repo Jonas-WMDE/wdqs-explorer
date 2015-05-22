@@ -36,13 +36,13 @@
           f(function (x) {
             x1 = x;
             if (x2 !== null) {
-              k(x1, x2);
+              k([x1, x2]);
             }
           });
           f2.apply(function (x) {
             x2 = x;
             if (x1 !== null) {
-              k(x1, x2);
+              k([x1, x2]);
             }
           });
         });
